@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PHP CRUD with VUEJS</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	
+	<div id="root">
+		<div class="container">
+			<h1 class="fleft">All users list</h1>
+			<button class="fright addNew" @click="showingAddModal = true">Add New</button>
+			<div class="clear"></div>
+			<hr>
+
+			<p class="errorMessage" v-if="errorMessage">
+				{{errorMessage}}
+			</p>
+
+			<p class="successMessage" v-if="successMessage">
+				{{successMessage}}
+			</p>
+
+			<table class="list">
+				<tr>
+					<th>ID</th>
+					<th>Username</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+
+				<tr v-for="user in users">
+					<td>{{user.id}}</td>
+					<td>{{user.name}}</td>
+					<td><button @click="showingEditModal = true; selectUser(user)">Edit</button></td>
+					<td><button @click="showingDeleteModal = true; selectUser(user)">Delete</button></td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="modal" id="addModal" v-if="showingAddModal">
+			<div class="modalContainer">
+				<div class="modalHeading">
+					<p class="fleft">Add new user</p>
+					<button class="fright close" @click="showingAddModal = false">X</button>
+					<div class="clear"></div>
+				</div>
+
+				<div class="modalContent">
+					<table class="form">
+						<tr>
+							<th>Username</th>
+							<th> : </th>
+							<td> <input type="text" v-model="newUser.name"> </td>
+						</tr>
+						<tr>
+							<th></th>
+							<th></th>
+							<td><button @click="showingAddModal = false; saveUser();">Save</button></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>	<!-- end add modal -->
+
+		<div class="modal" id="editModal" v-if="showingEditModal">
+			<div class="modalContainer">
+				<div class="modalHeading">
+					<p class="fleft">Update user</p>
+					<button class="fright close" @click="showingEditModal = false">X</button>
+					<div class="clear"></div>
+				</div>
+
+				<div class="modalContent">
+					<table class="form">
+						<tr>
+							<th>Username</th>
+							<th> : </th>
+							<td> <input type="text" v-model="clickedUser.name"> </td>
+						</tr>
+						<tr>
+							<th></th>
+							<th></th>
+							<td><button @click="showingEditModal = false; updateUser(clickedUser)">Update</button></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>	<!-- end eidt modal -->
+
+		<div class="modal" id="deleteModal" v-if="showingDeleteModal">
+			<div class="modalContainer">
+				<div class="modalHeading">
+					<p class="fleft">Are you sure, Delete data?</p>
+					<button class="fright close" @click="showingDeleteModal = false">X</button>
+					<div class="clear"></div>
+				</div>
+
+				<div class="modalContent">
+					<p>Delete the user '{{clickedUser.name}}'?</p>
+
+					<br>
+					<br>
+					<br>
+
+					<button @click="showingDeleteModal = false; deleteUser()">Yes</button>
+					<button @click="showingDeleteModal = false">Cancel</button>
+				</div>
+			</div>
+		</div>	<!-- end delete modal -->
+	</div>	<!-- end root -->
+
+	<script src="js/axios.min.js"></script>
+	<script src="js/vue.min.js"></script>
+	<script src="js/app.js"></script>
+</body>
+</html>
